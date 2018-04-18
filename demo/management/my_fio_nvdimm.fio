@@ -1,5 +1,5 @@
 [global]
-direct=0
+buffered=0
 randrepeat=0
 ioengine=libaio
 runtime=10
