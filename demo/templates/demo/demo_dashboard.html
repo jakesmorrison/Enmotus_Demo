@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SC 2017</title>
+
+    {% load staticfiles %}
+    <link href=" {% static 'demo/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href=" {% static 'demo/css/simple-sidebar.css' %}" rel="stylesheet">
+    <link href=" {% static 'demo/css/font.css' %}" rel="stylesheet">
+    <link href=" {% static 'demo/css/font-awesome.css' %}" rel="stylesheet">
+    <link href=" {% static 'demo/css/jquery-ui.css' %}" rel="stylesheet">
+    <link href=" {% static 'demo/css/dash_style.css' %}" rel="stylesheet">
+
+</head>
+<body class="mybody">
+    <div id="wrapper">
+        <div id="page-content-wrapper">
+            <div class="container-fluid">
+                <div class="row" style="">
+                    <div class="col-xs-12 cutout_head box_shadow_shift4" style="margin-top:0px;">
+                        <div class="row">
+                            <div class="col-xs-5">
+                                <div id="slider" class="myslider"></div>
+                                <h1 class="myheadings myfont" style="margin-top: 15px;">Persistent Memory Accelerates IOPs</h1>
+                                <p class="myheadings myfont "><i>Brought to you by</i></p>
+                            </div>
+                            <div class="col-xs-2 col-xs-offset-0" style="text-align:center;">
+                                <!--<img src="{% static 'sc_demo_2017/img/white-logo.png' %}" alt="micron" style="width:200px;height:60px;margin-top:17px;">-->
+                                <img src="{% static 'demo/img/micron_icon.png' %}" alt="micron" style="width:220px;margin-bottom: -40px; margin-top: -20px;">
+
+                            </div>
+                            <div class="col-xs-2"  style="text-align:center;">
+                                <img src="{% static 'demo/img/enmotus_logo_GrayLetter-on-ClearBackground.png' %}" alt="enmotus" style="width:210px;height:35px;margin-top: 32px;">
+                            </div>
+                            <div class="col-xs-2" style="text-align:center;">
+                                <img src="{% static 'demo/img/dell_icon.png' %}" alt="dell" style="width:200px;height:30px;margin-top:33px;">
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row" style="">
+                    <div class="col-xs-6 cutout_med box_shadow_shift2" style="margin-top:0px;">
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <h3 class="myheadings myfont">FuzeDrive (NVDIMM)</h3>
+                                <div class="para1"></div>
+                                </h4>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xs-6 cutout_med box_shadow_shift2" style="margin-top:0px;">
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <h3 class="myheadings myfont">Micron</h3>
+                                <h4 class="myfont para_style">
+                                Is using the Enmotus software, NVDIMM, and NVMe to give you the highest density, fastest storage solution.
+                                The FuzeDrive is made up of 192GB of NVDIMM and 1.6TB of NVMe.
+                                </h4>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+
+
+                <div class="row" style="">
+                    <div class="col-xs-12 cutout_small" style="margin-top:0px;margin-bottom: 10px;">
+                        <div class="row">
+                            <div class="col-xs-3 centered"><button type="button" class="btn btn-primary centered sel_button" id="fio_read" onclick="change_fio('fio_read')">Random 4k Reads Multi Job</button> <i class="fa fa-info-circle fa-2x" aria-hidden="true" style="" onclick="open_info('number_1')"></i></div>
+                            <div class="col-xs-3 centered"><button type="button" class="btn btn-primary centered my_button" id="fio_write" onclick="change_fio('fio_write')">Random 4k Writes Multi Job</button><i class="fa fa-info-circle fa-2x info_icon" aria-hidden="true" style="" onclick="open_info('number_2')"></i></div>
+                            <div class="col-xs-3 centered"><button type="button" class="btn btn-primary centered my_button" id="fio_7030" onclick="change_fio('fio_7030')">Random 128k Reads Multi Job</button><i class="fa fa-info-circle fa-2x info_icon" aria-hidden="true" style="" onclick="open_info('number_3')"></i></div>
+                            <div class="col-xs-3 centered"><button type="button" class="btn btn-primary centered my_button" id="fio_3070" onclick="change_fio('fio_3070')">Random 128k Writes Multi Job</button><i class="fa fa-info-circle fa-2x info_icon" aria-hidden="true" style="" onclick="open_info('number_4')"></i></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row" style="">
+                    <div class="popup display_no">
+                        <div class="row" style="">
+                            <div class="col-xs-12">
+                                <i class="fa fa-times-circle fa-3x" aria-hidden="true" style="" onclick="close_info()"></i>
+                            </div>
+                        </div>
+                        <div class="row" style="">
+                            <div class="col-xs-12" id="fio_info">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-xs-3 cutout box_shadow_shift1">
+                        <h3 class="myheadings myfont ">Latency</h3>
+                        <p class="myheadings myfont " style="margin-bottom: -15px; "><i>(Lower is better)</i></p>
+                        <br>
+                        <div class="row">
+                            <div class="col-xs-6">
+                                <h4 class=" myheadings myfont">FuzeDrive</h4>
+                                <p class="myheadings myfont "><i>(NVDIMM)</i></p>
+                            </div>
+                            <div class="col-xs-6">
+                                <h4 class=" myheadings myfont">NVMe</h4>
+                            </div>
+                        </div>
+                        <div class="row" style="margin-bottom: 11px;">
+                            <div class="col-xs-6">
+                                <div id="container_stack1" style="height: 250px; width: 100%;"></div>
+                                <div class=""><h3 class="myheadings myfont spark_label" id="lat_1_value" style="color: rgba(98, 157, 55, .75);"></h3></div>
+                            </div>
+                            <div class="col-xs-6">
+                                <div id="container_stack2" style="height: 250px; width: 100%;"></div>
+                                <div class=""><h3 class="myheadings myfont spark_label" id="lat_2_value" style="color: rgb(238,118,35);"></h3></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xs-7 cutout box_shadow_shift6" style="border-right: 0px solid #58595B; border-bottom-right-radius: 0px; border-top-right-radius: 0px;">
+                        <h3 class="myheadings myfont">IOPS</h3>
+                        <p class="myheadings myfont"><i>(Higher is better)</i></p>
+                        <br>
+                        <div id="container" style="width: 100%; height: 300px; margin: 0 auto;"></div>
+                    </div>
+                    <div class="col-xs-2 cutout box_shadow_shift5" style="border-left: 0px solid #58595B; border-bottom-left-radius: 0px; border-top-left-radius: 0px;">
+                        <!--<h3 class="myheadings myfont" style="opacity: 0.0;">opacity</h3>-->
+                        <!--<p class="myheadings myfont" style="opacity: 0.0; margin-bottom: -60px;"><i>opacity 0</i></p>-->
+                        <br>
+                        <div class="row" style="margin-top:-5px;">
+                            <div class="col-xs-12" style="margin-bottom: -50px;">
+                                    <h3 class="centered myheadings myfont" style="">FuzeDrive</h3>
+                                    <p class="myheadings myfont centered"><i>(NVDIMM)</i></p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                    <div class="nvdimm_write_text centered">
+                                        <div id="pie_nvdimm_write" style="width: 210px; height: 185px; margin: 0 auto"></div>
+                                    </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12" style="margin-bottom: -50px; margin-top:-6px;">
+                                    <h3 class="centered myheadings myfont" style="">NVMe</h3>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                    <div class="NVMe_write_text centered">
+                                        <div id="pie_NVMe_write" style="width: 210px; height: 185px; margin: 0 auto"></div>
+                                    </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+
+                     <div class="col-xs-4 cutout_table box_shadow_shift3" style="background: white;">
+                         <h3 class="myheadings myfont ">Average Latency</h3>
+                        <div class="row">
+                            <div class="col-xs-5">
+                                 <h4 class="myheadings myfont centered">FuzeDrive (NVDIMM)</h4>
+                                <br>
+                                 <h2 id="nvdimm_lat" class="myheadings myfont centered"></h2>
+                            </div>
+
+                            <div class="centered vert_line centered" style="left:41%;"></div>
+
+                            <div class="col-xs-2">
+                                 <h4 class="myheadings myfont centered">vs.</h4>
+                                <br>
+                                 <h3 id="lat_ratio" class="myheadings myfont centered" style="font-size: 20px;"></h3>
+                            </div>
+
+                            <div class="centered vert_line centered" style="left:58%;"></div>
+
+                            <div class="col-xs-5">
+                                 <h4 class="myheadings myfont centered">NVMe</h4>
+                                <br>
+                                <h2 id="nvme_lat" class="myheadings myfont centered"></h2>
+                            </div>
+                        </div>
+                     </div>
+
+                     <div class="col-xs-4 cutout_table box_shadow_shift3" style="background: white;">
+                         <h3 class="myheadings myfont ">Average Bandwidth</h3>
+                        <div class="row">
+                            <div class="col-xs-5">
+                                 <h4 class="myheadings myfont centered">FuzeDrive (NVDIMM)</h4>
+                                <br>
+                                 <h2 id="nvdimm_bw" class="myheadings myfont centered"></h2>
+                            </div>
+
+                            <div class="centered vert_line centered" style="left:41%;"></div>
+
+                            <div class="col-xs-2">
+                                 <h4 class="myheadings myfont centered">vs.</h4>
+                                <br>
+                                 <h3 id="bw_ratio" class="myheadings myfont centered" style="font-size: 20px;"></h3>
+                            </div>
+
+                            <div class="centered vert_line centered" style="left:58%;"></div>
+
+                            <div class="col-xs-5">
+                                 <h4 class="myheadings myfont centered">NVMe</h4>
+                                <br>
+                                 <h2 id="nvme_bw" class="myheadings myfont centered"></h2>
+                            </div>
+                        </div>
+                     </div>
+
+                     <div class="col-xs-4 cutout_table box_shadow_shift3" style="background: white;">
+                         <h3 class="myheadings myfont ">Average IOPS</h3>
+                        <div class="row">
+                            <div class="col-xs-5">
+                                 <h4 class="myheadings myfont centered">FuzeDrive (NVDIMM)</h4>
+                                <br>
+                                 <h2 id="nvdimm_iops" class="myheadings myfont centered"></h2>
+                            </div>
+
+                            <div class="centered vert_line centered" style="left:41%;"></div>
+
+                            <div class="col-xs-2">
+                                 <h4 class="myheadings myfont centered">vs.</h4>
+                                <br>
+                                 <h3 id="iops_ratio" class="myheadings myfont centered" style="font-size: 20px;"></h3>
+                            </div>
+                <br>
+
+                            <div class="centered vert_line centered" style="left:58%;"></div>
+
+                            <div class="col-xs-5">
+                                 <h4 class="myheadings myfont centered">NVMe</h4>
+                                <br>
+                                 <h2 id="nvme_iops" class="myheadings myfont centered"></h2>
+                            </div>
+                        </div>
+                     </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+
+{% load staticfiles %}
+<script src=" {% static 'demo/js/jquery-1.10.1.js' %}" rel="stylesheet"></script>
+<script src=" {% static 'demo/js/highcharts.js' %}" rel="stylesheet"></script>
+<script src=" {% static 'demo/js/bootstrap.min.js' %}" rel="stylesheet"></script>
+<script src=" {% static 'demo/js/jquery-ui.js' %}" rel="stylesheet"></script>
+
+<script src=" {% static 'demo/js/stack_chart.js' %}" rel="stylesheet"></script>
+<script src=" {% static 'demo/js/speedometer.js' %}" rel="stylesheet"></script>
+<script src=" {% static 'demo/js/spline_chart.js' %}" rel="stylesheet"></script>
+<script src=" {% static 'demo/js/demo-setup.js' %}" rel="stylesheet"></script>
+
+<script>
+var chart;
+var container_stack1;
+var container_stack2;
+var pie_nvdimm_write;
+var pie_NVMe_write;
+
+</script>
+
+</body>
+</html>

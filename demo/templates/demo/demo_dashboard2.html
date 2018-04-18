@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SC 2017</title>
+
+    {% load staticfiles %}
+    <link href=" {% static 'demo/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href=" {% static 'demo/css/font.css' %}" rel="stylesheet">
+    <link href=" {% static 'demo/css/font-awesome.css' %}" rel="stylesheet">
+    <link href=" {% static 'demo/css/jquery-ui.css' %}" rel="stylesheet">
+    <link href=" {% static 'demo/css/dash_style2.css' %}" rel="stylesheet">
+
+</head>
+<body>
+
+<div class="dropdown">
+<button onclick="myFunction()" class="dropbtn">Options</button>
+  <div id="myDropdown" class="dropdown-content">
+    <a href="#" id="fio_read" onclick="change_fio('option1')">Random 4k Reads Multi Job</a>
+    <!--<a href="#" id="fio_write" onclick="change_fio('option2')">Random 4k Write Multi Job</a>-->
+    <a href="#" id="fio_read_big" onclick="change_fio('option3')">Random 128k Reads Multi Job</a>
+    <!--<a href="#" id="fio_write_big" onclick="change_fio('option4')">Random 128k Write Multi Job</a>-->
+  </div>
+</div>
+
+    <div class="container-fluid">
+        <div class="row row1" style="">
+            <div class="col-xs-12">
+                <div class="row">
+                    <div class="col-xs-5">
+                        <div id="slider" class="myslider"></div>
+                        <h1 class="header myfont bold" style="font-size: 34px;">Persistent Memory Accelerates IOPs</h1>
+                        <p class="subheader myfont "><i>Brought to you by</i></p>
+                    </div>
+                    <div class="centered col-xs-2 col-xs-offset-0">
+                        <img class="logo micron" src="{% static 'demo/img/micron_white.png' %}" alt="micron">
+                    </div>
+                    <div class="centered col-xs-2">
+                        <img class="logo enmotus" src="{% static 'demo/img/enmotus_logo_GrayLetter-on-ClearBackground.png' %}" alt="enmotus">
+                    </div>
+                    <div class="centered col-xs-2">
+                        <img class="logo dell" src="{% static 'demo/img/DellEMC_Logo_Hz_Blk_rgb.png' %}" alt="dell">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row row2" style="">
+            <div class="col-xs-6 row2_1">
+                <h3 class="myfont fontcolor bold">FuzeDrive (NVDIMM)</h3>
+                <p class="myfont fontcolor" style="font-size: 2vh;">A technology developed by Enmotus. Their software identifies
+                    the active data set of applications and dynamically allocates the appropriate
+                    storage resources in order to optimize performance. </p>
+            </div>
+            <div class="col-xs-6 row2_2">
+                <h3 class="myfont fontcolor bold">Micron</h3>
+                <p class="myfont fontcolor" style="font-size: 2vh;">Is using the Enmotus software, NVDIMM, and NVMe to give you
+                    the highest density, fastest storage solution.
+                    The FuzeDrive is made up of 192GB of NVDIMM and 1.6TB of NVMe. </p>
+            </div>
+        </div>
+        <div class="row row3" style="">
+            <div class="col-xs-3 row3_1">
+                <h3 class="fontcolor myfont bold">Latency</h3>
+                <p class="fontcolor myfont"><i>(Lower is better)</i></p>
+                <div class="row">
+                    <div class="col-xs-6 lat_size">
+                        <h4 class=" fontcolor myfont">FuzeDrive</h4>
+                        <p class="fontcolor myfont "><i>(NVDIMM)</i></p>
+                    </div>
+                    <div class="col-xs-6">
+                        <h4 class=" fontcolor myfont">NVMe</h4>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-6">
+                        <div id="container_stack1" style="width: 100%;"></div>
+                        <div class=""><h3 class="fontcolor myfont spark_label" id="lat_1_value"></h3></div>
+                    </div>
+                    <div class="col-xs-6">
+                        <div id="container_stack2" style="width: 100%;"></div>
+                        <div class=""><h3 class="fontcolor myfont spark_label" id="lat_2_value"></h3></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-7 row3_2">
+                <h3 class="fontcolor myfont bold iops_title">IOPS</h3>
+                <p class="fontcolor myfont iops_subtitle"><i>(Higher is better)</i></p>
+                <div id="container" style="width: 100%;"></div>
+            </div>
+            <div class="col-xs-2 row3_3">
+
+            <div id="preview1" style="margin-top: 35px;">
+                <h4 class="fontcolor myfont nvdimm_align">FuzeDrive <br><span class="">(NVDIMM)</span></h4>
+                <div id="preview-textfield1" class="preview-textfield" style=""></div>
+                <canvas id="canvas-preview1" class="canvas-preview"></canvas>
+            </div>
+
+            <div id="preview2">
+                <h4 class="fontcolor myfont">NVMe</h4>
+                <div id="preview-textfield2" class="preview-textfield" style=""></div>
+                <canvas id="canvas-preview2" class="canvas-preview"></canvas>
+            </div>
+
+
+
+            </div>
+        </div>
+
+        <div class="row row4" style="">
+            <!--Latency-->
+            <div class="col-xs-4 row4_1">
+                <h3 class="fontcolor myfont bold">Average Latency</h3>
+                <div class="row">
+                    <div class="col-xs-4 ">
+                        <h4 class="fontcolor myfont nvdimm_align">FuzeDrive <br><span class="nvdimm_quotes">(NVDIMM)</span></h4>
+                        <br>
+                        <h3 id="nvdimm_lat" class="fontcolor myfont centered"></h3>
+                    </div>
+
+                    <div class="col-xs-4">
+                        <div class="vert_line centered" style="left: 0%"></div>
+                        <div class="vert_line centered" style="left: 100%"></div>
+                        <br>
+                        <h4 class="fontcolor myfont centered vs_text">vs.</h4>
+                        <h3 id="lat_ratio" class="fontcolor myfont centered"></h3>
+                    </div>
+
+                    <div class="col-xs-4">
+                        <h4 class="fontcolor myfont centered">NVMe</h4>
+                        <br>
+                        <h3 id="nvme_lat" class="fontcolor myfont centered"></h3>
+                    </div>
+                </div>
+            </div>
+
+            <!--Bandwidth-->
+            <div class="col-xs-4 row4_2">
+                <h3 class="fontcolor myfont bold">Average Bandwidth</h3>
+                <div class="row">
+                    <div class="col-xs-4">
+                        <h4 class="fontcolor myfont nvdimm_align">FuzeDrive <br><span class="nvdimm_quotes">(NVDIMM)</span></h4>
+                        <br>
+                        <h3 id="nvdimm_bw" class="fontcolor myfont centered"></h3>
+                    </div>
+
+                    <div class="col-xs-4">
+                        <div class="vert_line centered" style="left: 0%"></div>
+                        <div class="vert_line centered" style="left: 100%"></div>
+                        <br>
+                        <h4 class="fontcolor myfont centered vs_text">vs.</h4>
+                        <h3 id="bw_ratio" class="fontcolor myfont centered"></h3>
+                    </div>
+
+                    <div class="col-xs-4">
+                        <h4 class="fontcolor myfont centered">NVMe</h4>
+                        <br>
+                        <h3 id="nvme_bw" class="fontcolor myfont centered"></h3>
+                    </div>
+                </div>
+            </div>
+
+            <!--IOPS-->
+            <div class="col-xs-4 row4_3">
+                <h3 class="fontcolor myfont bold">Average IOPS</h3>
+                <div class="row">
+                    <div class="col-xs-4">
+                        <h4 class="fontcolor myfont nvdimm_align">FuzeDrive <br><span class="nvdimm_quotes">(NVDIMM)</span></h4>
+                        <br>
+                        <h3 id="nvdimm_iops" class="fontcolor myfont centered"></h3>
+                    </div>
+
+                    <div class="col-xs-4">
+                        <div class="vert_line centered" style="left: 0%"></div>
+                        <div class="vert_line centered" style="left: 100%"></div>
+                        <br>
+                        <h4 class="fontcolor myfont centered vs_text">vs.</h4>
+                        <h3 id="iops_ratio" class="fontcolor myfont centered"></h3>
+                    </div>
+
+                    <div class="col-xs-4">
+                        <h4 class="fontcolor myfont centered">NVMe</h4>
+                        <br>
+                        <h3 id="nvme_iops" class="fontcolor myfont centered"></h3>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+
+
+{% load staticfiles %}
+<script src=" {% static 'demo/js/jquery-1.10.1.js' %}" rel="stylesheet"></script>
+<script src=" {% static 'demo/js/highcharts.js' %}" rel="stylesheet"></script>
+<script src=" {% static 'demo/js/bootstrap.min.js' %}" rel="stylesheet"></script>
+<script src=" {% static 'demo/js/jquery-ui.js' %}" rel="stylesheet"></script>
+<script src=" {% static 'demo/js/stack_chart.js' %}" rel="stylesheet"></script>
+<script src=" {% static 'demo/js/spline_chart.js' %}" rel="stylesheet"></script>
+<script src=" {% static 'demo/js/gauge.js' %}" rel="stylesheet"></script>
+
+<script>
+var chart;
+var container_stack1;
+var container_stack2;
+var pie_nvdimm_write;
+var pie_NVMe_write;
+var option = "option1";
+
+/**
+ *Start Up.
+ */
+$(document).ready(function() {
+    //Setting Up Rows
+    var height = $(window).height();
+    $('.row1').css('height',height*.15);
+    $('.row2').css('height',height*.15);
+    $('.row3').css('height',height*.50);
+    $('.row4').css('height',height*.20);
+
+    // Highcharts Sizing
+    var row3_height = $('.row3').height();
+    iops_subtitle = $('.iops_subtitle').height();
+    iops_title = $('iops_title').height();
+    $('#container').css('height',row3_height-(15+10+iops_subtitle+iops_title+16+30));
+    lat_size = $('.lat_size').height();
+    $('#container_stack1').css('height',row3_height-(15+10+lat_size+16+45));
+    $('#container_stack2').css('height',row3_height-(15+10+lat_size+16+45));
+
+    //Fixing Speed Chart
+    $('#preview1').css('height',row3_height*.5-8);
+    $('#preview2').css('height',row3_height*.5-8);
+
+
+    //Fixing Logos
+    var row1_height = $('.row1').height();
+    var logo_height1 = $('.micron').height();
+    var logo_height2 = $('.enmotus').height();
+    var logo_height3 = $('.dell').height();
+    $('.micron').css('margin-top',(row1_height-logo_height1)/2);
+    $('.enmotus').css('margin-top',(row1_height-logo_height2)/2);
+    $('.dell').css('margin-top',(row1_height-logo_height3)/2);
+
+    // Fixing NVDIMM alignment issues.
+    //var nvdimm_align = $('.nvdimm_align').width();
+    //$('.nvdimm_quotes').css('left',nvdimm_align/4-5);
+
+
+    //Init Lat Chart
+    container_stack1 = stack_chart(["#0077C8"],"#0077C8",'container_stack1', '',[{data: [5]}, {data: [2]}, {data: [3]}],100);
+    container_stack2 = stack_chart(["#9ACA3C"],"#9ACA3C",'container_stack2', '',[{data: [5]}, {data: [2]}, {data: [3]}],100);
+
+    //Init IOPS Spline
+    chart = spline_chart();
+
+    // Start pulling data
+    requestData();
+});
+
+
+var counter = 1;
+var avg_nvme_lat = 0;
+var avg_nvme_bw = 0;
+var avg_nvme_iops = 0;
+var avg_nvdimm_lat = 0;
+var avg_nvdimm_bw = 0;
+var avg_nvdimm_iops = 0;
+var arr = []
+
+/**
+ * Request data from the server, add it to the graph and set a timeout
+ * to request again
+ */
+function requestData() {
+    url_base = "{% url 'demo:get_data' %}";
+    $.ajax({
+        type: 'GET',
+        url: url_base,
+        success: function(msg) {
+            console.log("Request Data");
+
+            // Change Max Values based on what option is selected. Kind of hacky but much easier.
+            if (option==="option1" || option==="option2"){
+                gauge1.maxValue = 3500000; // set max gauge value
+                gauge1.setMinValue(0);  // Prefer setter over gauge.minValue = 0
+                gauge2.maxValue = 3500000; // set max gauge value
+                gauge2.setMinValue(0);  // Prefer setter over gauge.minValue = 0
+                container_stack1.yAxis[0].setExtremes(0, 600)
+                container_stack2.yAxis[0].setExtremes(0, 600)
+            }
+            else{
+                gauge1.maxValue = 100000; // set max gauge value
+                gauge1.setMinValue(0);  // Prefer setter over gauge.minValue = 0
+                gauge2.maxValue = 100000; // set max gauge value
+                gauge2.setMinValue(0);  // Prefer setter over gauge.minValue = 0
+                container_stack1.yAxis[0].setExtremes(0, 12000)
+                container_stack2.yAxis[0].setExtremes(0, 12000)
+
+            }
+
+            // Spline Chart
+
+            var series = chart.series[0], shift = series.data.length > 30;
+            chart.series[0].addPoint(msg.nvdimm_iops, false, shift);
+            chart.series[1].addPoint(msg.nvme_iops, false, shift);
+
+            // Bar Chart
+            container_stack1.series[0].setData([msg.nvdimm_lat]);
+            container_stack2.series[0].setData([msg.nvme_lat]);
+
+            //Speed Gauage
+            gauge1.set(msg.nvdimm_iops[1]); // set actual value
+            $('#preview-textfield1').html(numberWithCommas(msg.nvdimm_iops[1]));
+            gauge2.set(msg.nvme_iops[1]); // set actual value
+            $('#preview-textfield2').html(numberWithCommas(msg.nvme_iops[1]));
+
+            // Pie Chart
+            <!--max = 2500000;-->
+            <!--nvdimm_write_value = (msg.nvdimm_iops[1]/max)*100;-->
+            <!--NVMe_write_value = (msg.nvme_iops[1]/max)*100;-->
+
+            <!--pie_nvdimm_write.series[0].data[0].update(nvdimm_write_value);-->
+            <!--pie_nvdimm_write.series[0].data[1].update(100-nvdimm_write_value);-->
+            <!--pie_nvdimm_write.setTitle({text: numberWithCommas(msg.nvdimm_iops[1])+""});-->
+
+            <!--pie_NVMe_write.series[0].data[0].update(NVMe_write_value);-->
+            <!--pie_NVMe_write.series[0].data[1].update(100-NVMe_write_value);-->
+            <!--pie_NVMe_write.setTitle({text: numberWithCommas(msg.nvme_iops[1])+""});-->
+
+            $("#lat_1_value").html(msg.nvdimm_lat+"µs");
+            $("#lat_2_value").html(msg.nvme_lat+"µs");
+
+            chart.redraw();
+
+            // For average and table display.
+            sample_rate=10;
+            if (counter===sample_rate){
+                $("#nvme_lat").text(numberWithCommas(String(parseInt(avg_nvme_lat/sample_rate)))+"µs");
+                $("#nvme_bw").text((String((avg_nvme_bw/15).toFixed(1)))+"GBps");
+                $("#nvme_iops").text(numberWithCommas(String(parseInt(avg_nvme_iops/sample_rate)))+"");
+
+                $("#nvdimm_lat").text(numberWithCommas(String(parseInt(avg_nvdimm_lat/sample_rate)))+"µs");
+                $("#nvdimm_bw").text((String((avg_nvdimm_bw/15).toFixed(1)))+"GBps");
+                $("#nvdimm_iops").text(numberWithCommas(String(parseInt(avg_nvdimm_iops/sample_rate)))+"");
+
+
+                $("#lat_ratio").text((((avg_nvdimm_lat/15)/(avg_nvme_lat/15)).toFixed(1))+"X");
+                $("#bw_ratio").text(String(((avg_nvdimm_bw/15)/(avg_nvme_bw/15)).toFixed(1))+"X");
+                $("#iops_ratio").text((((avg_nvdimm_iops/15)/(avg_nvme_iops/15)).toFixed(1))+"X");
+
+                counter = 0;
+                avg_nvme_lat = 0;
+                avg_nvme_bw = 0;
+                avg_nvme_iops = 0;
+
+                avg_nvdimm_lat = 0;
+                avg_nvdimm_bw = 0;
+                avg_nvdimm_iops = 0;
+            }
+
+            avg_nvme_lat = avg_nvme_lat+msg.nvme_lat;
+            avg_nvme_bw = avg_nvme_bw + parseFloat(msg.nvme_bw);
+            avg_nvme_iops = avg_nvme_iops+msg.nvme_iops[1];
+
+            avg_nvdimm_lat = avg_nvdimm_lat+msg.nvdimm_lat;
+            avg_nvdimm_bw = avg_nvdimm_bw + parseFloat(msg.nvdimm_bw);
+            avg_nvdimm_iops = avg_nvdimm_iops+msg.nvdimm_iops[1];
+
+            counter = counter + 1;
+            setTimeout(requestData, 2000);
+        }
+    });
+}
+
+/**
+ *Change Fio command file.
+ */
+function change_fio(name){
+    gauge1.set(0);
+    gauge2.set(0);
+    option = name;
+    url_base = "{% url 'demo:new_fio' %}";
+    params = {'fio': name}
+    url = url_base +"?"+$.param(params);
+    $.ajax({
+        type: 'GET',
+        url: url,
+        success: function(msg) {
+
+        }
+    })
+}
+
+function numberWithCommas(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
+function close_info(){
+    $(".popup").removeClass("display_yes")
+    $(".popup").addClass("display_no")
+}
+
+var fio_info_1 = ["direct=1","randrepeat=0","ioengine=libaio","runtime=60","size=12G","group_reporting=1","ramp_time=2","rw=randread","bs=4k","rwmixread=100","rwmixwrite=0","numjobs=16","iodepth=16","loops=100"]
+var fio_info_2 = ["direct=1","randrepeat=0","ioengine=libaio","runtime=60","size=12G","group_reporting=1","ramp_time=2","rw=randwrite","bs=4k","rwmixread=0","rwmixwrite=100","numjobs=16","iodepth=16","loops=100"]
+var fio_info_3 = ["direct=1","randrepeat=0","ioengine=libaio","runtime=60","size=12G","group_reporting=1","ramp_time=2","rw=randread","bs=4k","rwmixread=70","rwmixwrite=30","numjobs=16","iodepth=16","loops=100"]
+var fio_info_4 = ["direct=1","randrepeat=0","ioengine=libaio","runtime=60","size=12G","group_reporting=1","ramp_time=2","rw=randwrite","bs=4k","rwmixread=30","rwmixwrite=70","numjobs=16","iodepth=16","loops=100"]
+
+
+function open_info(value){
+    $("#fio_info").html("");
+    if(value === "number_1"){
+        $("#fio_info").append("<h3 class='myheadings myfont popup_text' style=''>High Yield IOPS (Random Read)</h3>")
+        $("#fio_info").append("<hr>")
+
+        <!--$("#fio_info").append("<h4 class='myheadings myfont popup_text' style=''>Random 4k Reads Multi Job</h4>")-->
+        for(i =0; i<fio_info_1.length; i++){
+            $("#fio_info").append("<h4 class='myheadings myfont popup_text'>"+fio_info_1[i]+"</h4>")
+        }
+    }
+    else if(value === "number_2"){
+        $("#fio_info").append("<h3 class='myheadings myfont popup_text' style='text-decoration: underline;'>Random 4KB Writes Multi Job</h3>")
+        for(i =0; i<fio_info_2.length; i++){
+            $("#fio_info").append("<h4 class='myheadings myfont popup_text'>"+fio_info_2[i]+"</h4>")
+        }
+    }
+    else if(value === "number_3"){
+        $("#fio_info").append("<h3 class='myheadings myfont popup_text' style='text-decoration: underline;'>Random 128KB Reads Multi Job</h3>")
+        for(i =0; i<fio_info_3.length; i++){
+            $("#fio_info").append("<h4 class='myheadings myfont popup_text'>"+fio_info_3[i]+"</h4>")
+        }
+    }
+    else if(value === "number_4"){
+        $("#fio_info").append("<h3 class='myheadings myfont popup_text' style='text-decoration: underline;'>Random 128KB Writes Multi Job</h3>")
+        for(i =0; i<fio_info_4.length; i++){
+            $("#fio_info").append("<h4 class='myheadings myfont popup_text'>"+fio_info_4[i]+"</h4>")
+        }
+    }
+
+    $(".popup").removeClass("display_no")
+    $(".popup").addClass("display_yes")
+}
+
+function myFunction() {
+    document.getElementById("myDropdown").classList.toggle("show");
+}
+
+// Close the dropdown if the user clicks outside of it
+window.onclick = function(event) {
+  if (!event.target.matches('.dropbtn')) {
+
+    var dropdowns = document.getElementsByClassName("dropdown-content");
+    var i;
+    for (i = 0; i < dropdowns.length; i++) {
+      var openDropdown = dropdowns[i];
+      if (openDropdown.classList.contains('show')) {
+        openDropdown.classList.remove('show');
+      }
+    }
+  }
+}
+
+
+var opts1 = {
+  angle: 0.15, // The span of the gauge arc
+  lineWidth: 0.44, // The line thickness
+  radiusScale: 1, // Relative radius
+  pointer: {
+    length: 0.75, // // Relative to gauge radius
+    strokeWidth: 0.035, // The thickness
+    color: '#000000' // Fill color
+  },
+  limitMax: false,     // If false, max value increases automatically if value > maxValue
+  limitMin: false,     // If true, the min value of the gauge will be fixed
+  colorStart: '#0077C8',   // Colors
+  colorStop: '#0077C8',    // just experiment with them
+  strokeColor: '#E0E0E0',  // to see which ones work best for you
+  generateGradient: true,
+  highDpiSupport: true,     // High resolution support
+};
+
+var target1 = document.getElementById('canvas-preview1'); // your canvas element
+var gauge1 = new Gauge(target1).setOptions(opts1); // create sexy gauge!
+gauge1.maxValue = 3000; // set max gauge value
+gauge1.setMinValue(0);  // Prefer setter over gauge.minValue = 0
+gauge1.animationSpeed = 10; // set animation speed (32 is default value)
+gauge1.set(1250); // set actual value
+
+var opts2 = {
+  angle: 0.15, // The span of the gauge arc
+  lineWidth: 0.44, // The line thickness
+  radiusScale: 1, // Relative radius
+  pointer: {
+    length: 0.75, // // Relative to gauge radius
+    strokeWidth: 0.035, // The thickness
+    color: '#000000' // Fill color
+  },
+  limitMax: false,     // If false, max value increases automatically if value > maxValue
+  limitMin: false,     // If true, the min value of the gauge will be fixed
+  colorStart: '#9ACA3C',   // Colors
+  colorStop: '#9ACA3C',    // just experiment with them
+  strokeColor: '#E0E0E0',  // to see which ones work best for you
+  generateGradient: true,
+  highDpiSupport: true,     // High resolution support
+};
+
+var target2 = document.getElementById('canvas-preview2'); // your canvas element
+var gauge2 = new Gauge(target2).setOptions(opts2); // create sexy gauge!
+gauge2.animationSpeed = 10; // set animation speed (32 is default value)
+
+</script>
+
+</body>
+</html>
