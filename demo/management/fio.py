@@ -93,37 +93,50 @@ class myfio():
         df_bw = pd.read_csv(fname+"_bw.log", header=None, usecols=[0, 1])
         df_bw.columns = ["time","bw"]
         # df_bw = df_bw.sort_values(by="time")
-        # df_bw = df_bw.head(keep_number*self.default["numjobs"])
-        df_bw = df_bw[1:keep_number]
+        # df_bw = df_bw.head((keep_number*self.default["numjobs"])-self.default["numjobs"])
+        # df_bw = df_bw[1:keep_number]
+
 
         df_iops = pd.read_csv(fname+"_iops.log", header=None, usecols=[0, 1])
         df_iops.columns = ["time","iops"]
         # df_iops = df_iops.sort_values(by="time")
-        # df_iops = df_iops.head(keep_number*self.default["numjobs"])
-        df_iops = df_iops[1:keep_number]
+        # df_iops = df_iops.head((keep_number*self.default["numjobs"])-self.default["numjobs"])
+        # df_iops = df_iops[1:keep_number]
+
 
         df_lat = pd.read_csv(fname+"_lat.log", header=None, usecols=[0, 1])
         df_lat.columns = ["time","lat"]
         # df_lat = df_lat.sort_values(by="time")
-        # df_lat = df_lat.head(keep_number*self.default["numjobs"])
-        df_lat = df_lat[1:keep_number]
+        # df_lat = df_lat.head((keep_number*self.default["numjobs"])-self.default["numjobs"])
+        df_lat = df_lat.drop(["time"], axis=1)
+        df_lat = df_lat[0:keep_number]
 
 
-        result = pd.concat([df_bw, df_lat, df_iops], axis=1)
+        # result = pd.concat([df_bw, df_lat, df_iops], axis=1)
+        result = pd.concat([df_bw, df_iops], axis=1)
         result = result.drop(["time"],axis=1)
 
-        # new_time = []
-        # for x in range(0, self.default["numjobs"]):
-        #     for y in range(0,keep_number):
-        #         new_time.append(y)
-        # result["time"] = new_time
-        # result = result.groupby(["time"]).mean().reset_index()
-        # result["lat"] = result["lat"]/self.default["numjobs"]
-        # result = result.head(keep_number)
+        new_time = []
+        counter = 0
+        for idx, row in result.iterrows():
+            if counter>=keep_number:
+                counter=0
+            new_time.append(counter)
+            counter = counter+1
 
-        result["bw"] = result["bw"] * 16
-        result["iops"] = result["iops"] * 16
+        result["time"] = new_time
+        result = result.groupby(["time"]).sum().reset_index()
 
+
+        df_lat["time"] = list(range(0,keep_number))
+
+
+        result = pd.concat([result, df_lat], axis=1)
+        result = result.drop(["time"],axis=1)
+
+
+        # result["bw"] = result["bw"] * 16
+        # result["iops"] = result["iops"] * 16
 
 
         #Write to DB

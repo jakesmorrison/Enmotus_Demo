@@ -49,7 +49,7 @@ function spline_chart(color1, color2, container, ytitle, data) {
     },
     yAxis: {
       //max: 2500000,
-      //min: 300000,
+      min: 0,
       title: {
         text: '',
         margin: 0,
