@@ -18,7 +18,7 @@ class myfio():
             'direct': 1,
             'randrepeat': 0,
             'ioengine': 'libaio',
-            'runtime': 10,
+            'runtime': 30,
             'size': '12G',
             'group_reporting': 1,
             'ramp_time': 2,
