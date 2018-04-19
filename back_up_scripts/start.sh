@@ -1,6 +1,6 @@
 #!/bin/sh
 
-python /home/micron/conference_demo/demo/management/kill_all.py
+python /home/micron/enmotus_demo/demo/management/kill_all.py
 
 sudo ecmd --delete_all
 sudo ecmd --pagesize 128k
@@ -11,4 +11,4 @@ sudo ecmd --create vdrive /dev/nvme0n1
 sudo ecmd --create vdrive0 vdrive1
 sudo ecmd --stats off t=0 
 
-python /home/micron/conference_demo/manage.py runserver
+python /home/micron/enmotus_demo/manage.py runserver

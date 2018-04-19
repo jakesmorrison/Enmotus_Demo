@@ -2,7 +2,6 @@ import subprocess
 import sqlite3
 import os
 import sys
-from django.conf import settings
 password = "micron"
 
 def start_app(option_number):
