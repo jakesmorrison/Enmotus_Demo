@@ -2,9 +2,8 @@ import subprocess
 import pandas as pd
 import sqlite3
 import sys
-import os,signal
+import os
 password = "micron"
-
 
 class myfio():
     def __init__(self):
@@ -140,7 +139,11 @@ class myfio():
 
 
         #Write to DB
-        db_path = "/home/micron/conference_demo/db.sqlite3"
+        db_path = os.path.dirname(os.path.realpath(__file__)).split("/")
+        db_path = db_path[0:len(db_path)-2]
+        db_path = "/".join(db_path)
+        db_path = db_path+"/db.sqlite3"
+
         conn = sqlite3.connect(db_path)
         cursor = conn.cursor()
         for index, row in result.iterrows():

@@ -15,7 +15,11 @@ def start_app(option_number):
 
     print("Clear DB")
     print("----------------------------")
-    db_path = "/home/micron/conference_demo/db.sqlite3"
+    db_path = os.path.dirname(os.path.realpath(__file__)).split("/")
+    db_path = db_path[0:len(db_path) - 2]
+    db_path = "/".join(db_path)
+    db_path = db_path + "/db.sqlite3"
+
     conn = sqlite3.connect(db_path)
     cursor = conn.cursor()
     table_names=["nvdimm","nvme"]

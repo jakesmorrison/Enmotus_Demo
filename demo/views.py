@@ -1,6 +1,4 @@
 from django.shortcuts import render
-import random
-import subprocess
 from django.http import JsonResponse
 import json
 from .management import methods
