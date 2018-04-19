@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>SC 2017</title>
+    <title>Conference Demo</title>
 
     {% load staticfiles %}
     <link href=" {% static 'demo/css/bootstrap.min.css' %}" rel="stylesheet">
@@ -370,7 +370,7 @@ function requestData() {
             avg_nvdimm_iops = avg_nvdimm_iops+msg.nvdimm_iops[1];
 
             counter = counter + 1;
-            setTimeout(requestData, 2000);
+            setTimeout(requestData, 1500);
         }
     });
 }
