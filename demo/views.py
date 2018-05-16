@@ -38,3 +38,9 @@ def new_fio(request):
 
     context={}
     return JsonResponse(json.loads(json.dumps(context)))
+
+def stop_demo(request):
+    print("Stop")
+    methods.Methods.kill_all()
+    context={}
+    return JsonResponse(json.loads(json.dumps(context)))

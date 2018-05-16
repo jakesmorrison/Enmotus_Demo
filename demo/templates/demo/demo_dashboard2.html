@@ -24,6 +24,9 @@
   </div>
 </div>
 
+<div id="stop-button" class="stop-button" onclick="stopDemo()">Stop</div>
+
+
     <div class="container-fluid">
         <div class="row row1" style="">
             <div class="col-xs-12">
@@ -282,24 +285,37 @@ function requestData() {
         success: function(msg) {
             console.log("Request Data");
 
+            if(msg.nvme_lat>0){
+                $('#container_stack1').show();
+            }
+            if(msg.nvdimm_lat>0){
+                $('#container_stack2').show();
+            }
+
+
             // Change Max Values based on what option is selected. Kind of hacky but much easier.
-            if (option==="option1" || option==="option2"){
-                gauge1.maxValue = 2800000; // set max gauge value
-                gauge1.setMinValue(0);  // Prefer setter over gauge.minValue = 0
-                gauge2.maxValue = 2800000; // set max gauge value
-                gauge2.setMinValue(0);  // Prefer setter over gauge.minValue = 0
-                container_stack1.yAxis[0].setExtremes(0, 600)
-                container_stack2.yAxis[0].setExtremes(0, 600)
+            if (option==="option1"){
+                gauge1.maxValue = 3000000; // set max gauge value
+                gauge2.maxValue = 3000000; // set max gauge value
+            }
+            else if(option==="option2"){
+                gauge1.maxValue = 600000; // set max gauge value
+                gauge2.maxValue = 600000; // set max gauge value
+            }
+            else if(option==="option3"){
+                gauge1.maxValue = 100000; // set max gauge value
+                gauge2.maxValue = 100000; // set max gauge value
             }
             else{
-                gauge1.maxValue = 300000; // set max gauge value
-                gauge1.setMinValue(0);  // Prefer setter over gauge.minValue = 0
-                gauge2.maxValue = 300000; // set max gauge value
-                gauge2.setMinValue(0);  // Prefer setter over gauge.minValue = 0
-                container_stack1.yAxis[0].setExtremes(0, 12000)
-                container_stack2.yAxis[0].setExtremes(0, 12000)
-
+                gauge1.maxValue = 50000; // set max gauge value
+                gauge2.maxValue = 50000; // set max gauge value
             }
+
+            gauge1.setMinValue(0);  // Prefer setter over gauge.minValue = 0
+            gauge2.setMinValue(0);  // Prefer setter over gauge.minValue = 0
+            container_stack1.yAxis[0].setExtremes(0, parseInt(msg.nvme_lat*1.2))
+            container_stack2.yAxis[0].setExtremes(0, parseInt(msg.nvme_lat*1.2))
+
 
             // Spline Chart
 
@@ -348,8 +364,8 @@ function requestData() {
 
 
                 $("#lat_ratio").text((((avg_nvdimm_lat/15)/(avg_nvme_lat/15)).toFixed(2))+"X");
-                $("#bw_ratio").text(String(((avg_nvdimm_bw/15)/(avg_nvme_bw/15)).toFixed(1))+"X");
-                $("#iops_ratio").text((((avg_nvdimm_iops/15)/(avg_nvme_iops/15)).toFixed(1))+"X");
+                $("#bw_ratio").text(String(((avg_nvdimm_bw/15)/(avg_nvme_bw/15)).toFixed(2))+"X");
+                $("#iops_ratio").text((((avg_nvdimm_iops/15)/(avg_nvme_iops/15)).toFixed(2))+"X");
 
                 counter = 0;
                 avg_nvme_lat = 0;
@@ -379,8 +395,6 @@ function requestData() {
  *Change Fio command file.
  */
 function change_fio(name){
-    gauge1.set(0);
-    gauge2.set(0);
     option = name;
 
     $('#option1').removeClass('bold');
@@ -397,6 +411,8 @@ function change_fio(name){
         type: 'GET',
         url: url,
         success: function(msg) {
+            $('#container_stack1').hide();
+            $('#container_stack2').hide();
         }
     })
 }
@@ -467,6 +483,15 @@ window.onclick = function(event) {
       }
     }
   }
+}
+
+function stopDemo(){
+    url_base = "{% url 'demo:stop_demo' %}";
+    $.ajax({
+        type: 'GET',
+        url: url_base,
+        success: function(msg) {}
+    })
 }
 
 

@@ -14,7 +14,7 @@ class myfio():
         self.option_number = sys.argv[4]
 
         self.default = {
-            "direct": 1,
+            "direct": 0,
             'randrepeat': 0,
             'ioengine': 'libaio',
             'runtime': 30,
