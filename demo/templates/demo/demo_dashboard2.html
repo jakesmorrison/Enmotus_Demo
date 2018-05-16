@@ -347,7 +347,7 @@ function requestData() {
                 $("#nvdimm_iops").text(numberWithCommas(String(parseInt(avg_nvdimm_iops/sample_rate)))+"");
 
 
-                $("#lat_ratio").text((((avg_nvdimm_lat/15)/(avg_nvme_lat/15)).toFixed(1))+"X");
+                $("#lat_ratio").text((((avg_nvdimm_lat/15)/(avg_nvme_lat/15)).toFixed(2))+"X");
                 $("#bw_ratio").text(String(((avg_nvdimm_bw/15)/(avg_nvme_bw/15)).toFixed(1))+"X");
                 $("#iops_ratio").text((((avg_nvdimm_iops/15)/(avg_nvme_iops/15)).toFixed(1))+"X");
 
