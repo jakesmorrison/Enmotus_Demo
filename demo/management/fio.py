@@ -146,6 +146,12 @@ class myfio():
 
         conn = sqlite3.connect(db_path)
         cursor = conn.cursor()
+
+        # Clearing Database
+        sql_command = 'DELETE FROM demo_'+self.device
+        cur = conn.cursor()
+        cur.execute(sql_command)
+
         for index, row in result.iterrows():
             cursor.execute("insert into demo_"+self.device+" (bw, lat, iops) values (?, ?, ?)",(int(row["bw"]), int(row["lat"]), int(row["iops"])))
         conn.commit()
