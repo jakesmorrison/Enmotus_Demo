@@ -3,6 +3,7 @@ from django.http import JsonResponse
 import json
 from .management import methods
 import os
+import sqlite3
 
 counter = 0
 
@@ -42,5 +43,18 @@ def new_fio(request):
 def stop_demo(request):
     print("Stop")
     methods.Methods.kill_all()
+
+    db_path = os.path.dirname(os.path.realpath(__file__)).split("/")
+    db_path = db_path[0:len(db_path) - 1]
+    db_path = "/".join(db_path)
+    db_path = db_path + "/db.sqlite3"
+
+    conn = sqlite3.connect(db_path)
+    cursor = conn.cursor()
+    table_names=["nvdimm","nvme"]
+    for x in table_names:
+        cursor.execute("DELETE FROM demo_"+x)
+    conn.commit()
+
     context={}
     return JsonResponse(json.loads(json.dumps(context)))
